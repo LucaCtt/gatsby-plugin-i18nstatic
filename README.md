@@ -1,5 +1,7 @@
 # gatsby-plugin-i18nstatic
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d0fe5f17a62e4c0d8a28e5b520ca5061)](https://app.codacy.com/app/LucaCtt/gatsby-plugin-i18nstatic?utm_source=github.com&utm_medium=referral&utm_content=LucaCtt/gatsby-plugin-i18nstatic&utm_campaign=Badge_Grade_Dashboard)
+
 A gatsby plugin for static i18n.
 
 In particular, this plugin create a copy of every page for each locale, and passes to each page the current locale
