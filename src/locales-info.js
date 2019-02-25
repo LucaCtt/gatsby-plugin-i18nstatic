@@ -1,3 +1,5 @@
+import { createContext, useContext } from "react";
+
 export const LocalesInfoContext = createContext({
   currentLocale: "",
   defaultLocale: "",
