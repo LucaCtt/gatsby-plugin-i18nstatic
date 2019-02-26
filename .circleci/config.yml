@@ -1,23 +1,57 @@
 version: 2.1
 
+defaults: &defaults
+  docker:
+    - image: circleci/node:10
+
 jobs:
-  build:
-    docker:
-      - image: circleci/node:10
+  test:
+    <<: *defaults
     steps:
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: install-npm
+          name: Install dependencies
           command: npm install
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
-          name: test
+          name: Test
           command: "npm test -- --coverage"
       - run:
-          name: code-coverage
+          name: Upload coverage to codacy
           command: "cat ./coverage/lcov.info | npx codacy-coverage"
+
+  deploy:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Build project
+          command: "npm build"
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run:
+          name: Publish to npm
+          command: npm publish
+
+workflows:
+  version: 2
+  test-deploy:
+    jobs:
+      - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
