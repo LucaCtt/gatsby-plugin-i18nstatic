@@ -2,7 +2,7 @@
   "name": "gatsby-plugin-i18nstatic",
   "description": "A gatsby plugin for static i18n",
   "author": "Luca Cotti <lucacotti@outlook.com>",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "keywords": [
     "gatsby",
