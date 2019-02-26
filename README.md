@@ -1,6 +1,10 @@
 # gatsby-plugin-i18nstatic
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d0fe5f17a62e4c0d8a28e5b520ca5061)](https://app.codacy.com/app/LucaCtt/gatsby-plugin-i18nstatic?utm_source=github.com&utm_medium=referral&utm_content=LucaCtt/gatsby-plugin-i18nstatic&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/3caa69feac2a46b0b4c5cdf230dc38e2)](https://www.codacy.com/app/LucaCtt/gatsby-plugin-i18nstatic?utm_source=github.com&utm_medium=referral&utm_content=LucaCtt/gatsby-plugin-i18nstatic&utm_campaign=Badge_Coverage)
+[![build](https://img.shields.io/circleci/project/github/LucaCtt/gatsby-plugin-i18nstatic.svg)](https://circleci.com/gh/LucaCtt/gatsby-plugin-i18nstatic)
+[![version](https://img.shields.io/npm/v/gatsby-plugin-i18nstatic.svg)](https://www.npmjs.com/package/gatsby-plugin-i18nstatic)
+[![dependencies](https://img.shields.io/david/lucactt/gatsby-plugin-i18nstatic.svg)](https://www.npmjs.com/package/gatsby-plugin-i18nstatic)
 
 A gatsby plugin for static i18n.
 
