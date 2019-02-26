@@ -68,6 +68,6 @@ lib
 /gatsby-node.js
 /getLocales.js
 /index.js
-/link.jsx
-/locales-info-provider.jsx
+/link.js
+/locales-info-provider.js
 /locales-info.js
