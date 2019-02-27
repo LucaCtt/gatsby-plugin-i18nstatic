@@ -1,36 +1,37 @@
 import getLocales from "../getLocales";
-import fs from "fs";
+import { readdirSync, statSync } from "fs";
 
-jest.mock("fs", () => ({
-  readdirSync: jest.fn(() => []),
-  statSync: jest.fn(() => ({
-    isDirectory: () => true
-  }))
-}));
+const MOCK_FOLDER = "test";
+const MOCK_LOCALES = ["en", "it", "es"];
+const MOCK_IGNORED = ["_build"];
 
-jest.mock("path", () => ({
-  join: jest.fn(() => "test")
-}));
+jest.mock("fs");
+jest.mock("path");
 
 test("Returns array of locales in dir", () => {
-  fs.readdirSync.mockImplementation(() => ["en", "it"]);
-  const locales = getLocales("test");
-  expect(locales).toEqual(["en", "it"]);
+  readdirSync.mockReturnValue(MOCK_LOCALES);
+  statSync.mockReturnValue({ isDirectory: () => true });
+
+  const locales = getLocales(MOCK_FOLDER);
+  expect(locales).toEqual(MOCK_LOCALES);
 });
 
 test("Ignores everything except directories in dir", () => {
-  fs.readdirSync.mockImplementation(() => ["en", "it"]);
-  fs.statSync
-    .mockImplementationOnce(() => ({ isDirectory: () => true }))
-    .mockImplementationOnce(() => ({ isDirectory: () => false }));
+  readdirSync.mockReturnValue(MOCK_LOCALES);
+  statSync
+    .mockReturnValueOnce({ isDirectory: () => true })
+    .mockReturnValue({ isDirectory: () => false });
 
-  const locales = getLocales("test");
-
-  expect(locales).toEqual(["en"]);
+  const locales = getLocales(MOCK_FOLDER);
+  expect(locales).toEqual([MOCK_LOCALES[0]]);
 });
 
 test("Ignores ignored directory in dir", () => {
-  fs.readdirSync.mockImplementation(() => ["en", "it", "build"]);
-  const locales = getLocales("test", ["build"]);
-  expect(locales).toEqual(["en", "it"]);
+  readdirSync.mockImplementation(() => [...MOCK_IGNORED, ...MOCK_LOCALES]);
+  statSync.mockReturnValue({ isDirectory: () => true });
+
+  const locales = getLocales(MOCK_FOLDER, MOCK_IGNORED);
+  expect(locales).toEqual(MOCK_LOCALES);
 });
+
+test("Throws error if directory doesn't exist", () => {});

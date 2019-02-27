@@ -2,17 +2,19 @@
 
 exports[`Renders correctly 1`] = `
 <div>
-  en
-   - 
-  it
-   -
-   
+  <p>
+    it
+    en
+  </p>
   <ul>
+    <li>
+      en
+    </li>
     <li>
       it
     </li>
     <li>
-      en
+      es
     </li>
   </ul>
 </div>
