@@ -1,12 +1,27 @@
-import { readdirSync, statSync } from "fs";
+import { promises } from "fs";
 import { join } from "path";
 
-const dirs = (path, ignored) =>
-  readdirSync(path).filter(
-    f => !ignored.find(i => f === i) && statSync(join(path, f)).isDirectory()
-  );
+const { readdir, stat } = promises;
 
-export default (localesFolder, ignoredFolders = []) => {
-  const locales = dirs(localesFolder, ignoredFolders);
+const dirs = async (path, ignored) => {
+  const result = [];
+  const files = await readdir(path);
+
+  for (const file of files) {
+    const isIgnored = ignored.find(i => file === i);
+    const fileStatus = await stat(join(path, file));
+
+    if (isIgnored || !fileStatus.isDirectory()) {
+      continue;
+    }
+
+    result.push(file);
+  }
+
+  return result;
+};
+
+export default async (localesFolder, ignoredFolders = []) => {
+  const locales = await dirs(localesFolder, ignoredFolders);
   return locales;
 };

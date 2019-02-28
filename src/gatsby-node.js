@@ -1,18 +1,14 @@
 import getLocales from "./getLocales";
 
-export const onCreatePage = (
+export const onCreatePage = async (
   { page, actions },
   { locales: localesArg, localesFolder, ignoredFolders, defaultLocale }
 ) => {
   const { createPage, deletePage } = actions;
 
-  let locales;
-
-  if (localesArg) {
-    locales = localesArg;
-  } else {
-    locales = getLocales(localesFolder, ignoredFolders);
-  }
+  const locales = localesArg
+    ? localesArg
+    : await getLocales(localesFolder, ignoredFolders);
 
   if (!locales.find(l => l === defaultLocale)) {
     throw new Error(
@@ -20,14 +16,14 @@ export const onCreatePage = (
     );
   }
 
-  return new Promise(resolve => {
-    deletePage(page);
+  await deletePage(page);
 
-    locales.map(lang => {
+  await Promise.all(
+    locales.map(async lang => {
       const localizedPath =
         lang === defaultLocale ? page.path : lang + page.path;
 
-      createPage({
+      await createPage({
         ...page,
         path: localizedPath,
         context: {
@@ -39,8 +35,6 @@ export const onCreatePage = (
           }
         }
       });
-    });
-
-    resolve();
-  });
+    })
+  );
 };
