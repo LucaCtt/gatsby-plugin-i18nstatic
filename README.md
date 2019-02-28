@@ -10,7 +10,7 @@ A gatsby plugin for static i18n.
 
 In particular, this plugin create a copy of every page for each locale, and passes to each page the current locale
 (among other info) as `pageContext`.
-It also includes a wrapped `Link` component that supports i18n and a `LocaleProvider` that you can use to provide
+It also includes a wrapped `Link` component that supports i18n and a `LocalesInfoProvider` that you can use to provide
 the locale info as context.
 
 ## Installation
@@ -26,6 +26,53 @@ With yarn:
 ```sh
 yarn add gatsby-plugin-i18nstatic
 ```
+
+## Usage
+
+### Plugin
+
+Add the following section to your `gatsby-config.js`:
+
+```js
+{
+  resolve: "gatsby-plugin-i18nstatic",
+    options: {
+      locales: ["en", "es"],
+      defaultLocale: "en"
+  }
+}
+```
+
+where the `locales` option is a list of all the locales you want to generates pages for, and `defaultLocale`
+is the locale to associate with the root (`/`) path of your app.
+
+For example, say that we have a page called `home`. In this case the plugin would generate a page with the path
+`/home` with the english locale, and a page at `/es/home` with the spanish locale.
+
+Of course, `defaultLocale` is optional: if you don't want this behaviour, simply omit it.
+
+An alternative to specifing the locales as an array is to instead use the `localesFolder` option (and if needed, also the
+`ignoredFolders` one), like this:
+
+```js
+{
+  resolve: "gatsby-plugin-i18nstatic",
+    options: {
+      localesFolder: `${__dirname}/src/locales`,
+      ignoredFolders: ["_build"],
+      defaultLocale: "en"
+  }
+}
+```
+
+This way, the plugin will consider every directory in the folder `${__dirname}/src/locales` as a locale, while
+also obviously ignoring the ones specified in `ignoredFolders`.
+
+### Components
+
+This plugin also included a couple of useful React components:
+
+- `Link`: a lighweight wrapper around Gatsby's Link component, with support for localized routes.
 
 ## License
 
