@@ -1,7 +1,9 @@
-import { promises } from "fs";
+import { readdir as readdirCall, stat as statCall } from "fs";
+import { promisify } from "util";
 import { join } from "path";
 
-const { readdir, stat } = promises;
+const readdir = promisify(readdirCall);
+const stat = promisify(statCall);
 
 const dirs = async (path, ignored) => {
   const result = [];

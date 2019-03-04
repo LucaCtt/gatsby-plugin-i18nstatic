@@ -9,7 +9,7 @@ module.exports = {
     "jest-dom/extend-expect",
     "react-testing-library/cleanup-after-each"
   ],
-  restoreMocks: true,
+  clearMocks: true,
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*.{js,jsx}"],
   errorOnDeprecated: true

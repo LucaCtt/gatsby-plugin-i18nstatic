@@ -1,42 +1,48 @@
 import getLocales from "../getLocales";
-import { promises } from "fs";
-
-const { readdir, stat } = promises;
+import { readdir, stat } from "fs";
 
 const MOCK_FOLDER = "test";
 const MOCK_LOCALES = ["en", "it", "es"];
 const MOCK_IGNORED = ["_build"];
 
 jest.mock("fs", () => ({
-  promises: {
-    readdir: jest.fn(() => Promise.resolve({})),
-    stat: jest.fn(() => Promise.resolve({}))
-  }
+  readdir: jest.fn(),
+  stat: jest.fn()
 }));
 
 jest.mock("path");
 
 test("Returns array of locales in dir", async () => {
-  readdir.mockReturnValue(Promise.resolve(MOCK_LOCALES));
-  stat.mockReturnValue(Promise.resolve({ isDirectory: () => true }));
+  readdir.mockImplementation((_path, callback) => callback(null, MOCK_LOCALES));
+  stat.mockImplementation((_path, callback) =>
+    callback(null, { isDirectory: () => true })
+  );
 
   const locales = await getLocales(MOCK_FOLDER);
   expect(locales).toEqual(MOCK_LOCALES);
 });
 
 test("Ignores everything except directories in dir", async () => {
-  readdir.mockReturnValue(MOCK_LOCALES);
+  readdir.mockImplementation((_path, callback) => callback(null, MOCK_LOCALES));
   stat
-    .mockReturnValueOnce({ isDirectory: () => true })
-    .mockReturnValue({ isDirectory: () => false });
+    .mockImplementationOnce((_path, callback) =>
+      callback(null, { isDirectory: () => true })
+    )
+    .mockImplementation((_path, callback) =>
+      callback(null, { isDirectory: () => false })
+    );
 
   const locales = await getLocales(MOCK_FOLDER);
   expect(locales).toEqual([MOCK_LOCALES[0]]);
 });
 
 test("Ignores ignored directory in dir", async () => {
-  readdir.mockImplementation(() => [...MOCK_IGNORED, ...MOCK_LOCALES]);
-  stat.mockReturnValue({ isDirectory: () => true });
+  readdir.mockImplementation((_path, callback) =>
+    callback(null, [...MOCK_IGNORED, ...MOCK_LOCALES])
+  );
+  stat.mockImplementation((_path, callback) =>
+    callback(null, { isDirectory: () => true })
+  );
 
   const locales = await getLocales(MOCK_FOLDER, MOCK_IGNORED);
   expect(locales).toEqual(MOCK_LOCALES);
