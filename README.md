@@ -9,9 +9,9 @@
 A gatsby plugin for static i18n.
 
 In particular, this plugin create a copy of every page for each locale, and passes to each page the current locale
-(among other info) as `pageContext`.
+(and other info) through `pageContext`.
 It also includes a wrapped `Link` component that supports i18n and a `LocalesInfoProvider` that you can use to provide
-the locale info as context.
+the locales info as React context.
 
 ## Installation
 
@@ -37,8 +37,8 @@ Add the following section to your `gatsby-config.js`:
 {
   resolve: "gatsby-plugin-i18nstatic",
     options: {
-      locales: ["en", "es"],
-      defaultLocale: "en"
+      locales: ["*your locales here*"],
+      defaultLocale: "*your default locale*"
   }
 }
 ```
@@ -65,14 +65,18 @@ An alternative to specifing the locales as an array is to instead use the `local
 }
 ```
 
-This way, the plugin will consider every directory in the folder `${__dirname}/src/locales` as a locale, while
-also obviously ignoring the ones specified in `ignoredFolders`.
+This way, the plugin will consider every directory in `${__dirname}/src/locales` as a locale, while
+also ignoring `_build`.
 
 ### Components
 
-This plugin also included a couple of useful React components:
+This plugin also includes a couple of useful React components:
 
-- `Link`: a lighweight wrapper around Gatsby's Link component, with support for localized routes.
+- `LocalesInfoProvider`: provides locales info to children through React context.
+- `Link`: a lighweight wrapper around Gatsby's Link component, with support for localized routes. Must be a child
+  of `LocalesInfoProvider`.
+
+If you need it, there's also a `useLocalesInfo` hook.
 
 ## License
 

@@ -65,6 +65,7 @@ lib
 
 .DS_Store
 
+# Built files
 /gatsby-node.js
 /getLocales.js
 /index.js

@@ -6,6 +6,11 @@ export const LocalesInfoContext = createContext({
   locales: []
 });
 
+/**
+ * Returns the locales info read from LocalesInfoContext in the form of
+ * ```[currentLocale, defaultLocale, locales]```, where the last value is an array of all
+ * the locales.
+ */
 export const useLocalesInfo = () => {
   const { currentLocale, defaultLocale, locales } = useContext(
     LocalesInfoContext

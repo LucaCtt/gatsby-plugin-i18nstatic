@@ -7,7 +7,7 @@ module.exports = {
   testURL: "http://localhost",
   setupFilesAfterEnv: [
     "jest-dom/extend-expect",
-    "react-testing-library/cleanup-after-each"
+    "@testing-library/react/cleanup-after-each"
   ],
   clearMocks: true,
   collectCoverage: true,

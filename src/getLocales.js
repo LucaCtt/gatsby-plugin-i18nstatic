@@ -2,18 +2,27 @@ import { readdir as readdirCall, stat as statCall } from "fs";
 import { promisify } from "util";
 import { join } from "path";
 
+// Promisify readdir and stat to enable use of async.
 const readdir = promisify(readdirCall);
 const stat = promisify(statCall);
 
-const dirs = async (path, ignored) => {
+/**
+ * Returns a list of directories names found in the specified path. Filters out the names
+ * in the ignored array.
+ * @param {string} path The path in which to look for directories.
+ * @param {Object[]} ignored  The array containing the directories to not list.
+ */
+const dirs = async (path, ignored = []) => {
   const result = [];
   const files = await readdir(path);
 
   for (const file of files) {
-    const isIgnored = ignored.find(i => file === i);
-    const fileStatus = await stat(join(path, file));
+    if (ignored.includes(file)) {
+      continue;
+    }
 
-    if (isIgnored || !fileStatus.isDirectory()) {
+    const fileStatus = await stat(join(path, file));
+    if (!fileStatus.isDirectory()) {
       continue;
     }
 
@@ -23,7 +32,15 @@ const dirs = async (path, ignored) => {
   return result;
 };
 
-export default async (localesFolder, ignoredFolders = []) => {
-  const locales = await dirs(localesFolder, ignoredFolders);
+/**
+ * Returns a list of locales (names of the directories) found in the specified path. Filters out the directories
+ * in the ignored array.
+ * @param {*} localesPath The path in which to look for locales.
+ * @param {*} ignored The array of ignored directories.
+ */
+const getLocales = async (localesPath, ignored = []) => {
+  const locales = await dirs(localesPath, ignored);
   return locales;
 };
+
+export default getLocales;

@@ -1,3 +1,6 @@
+# Use a separate .npmignore file instead of just .gitignore, so files built in the ci are actually published to npm.
+
+
 # Logs
 logs
 *.log
